@@ -7,7 +7,11 @@ User = get_user_model()
 
 
 class PostSerializer(serializers.ModelSerializer):
-    author = serializers.SlugRelatedField(slug_field='username', read_only=True)
+    # Исправлено: перенос длинной строки
+    author = serializers.SlugRelatedField(
+        slug_field='username',
+        read_only=True
+    )
 
     class Meta:
         fields = ('id', 'text', 'author', 'pub_date')
@@ -15,7 +19,11 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    author = serializers.SlugRelatedField(slug_field='username', read_only=True)
+    # Исправлено: перенос длинной строки
+    author = serializers.SlugRelatedField(
+        slug_field='username',
+        read_only=True
+    )
 
     class Meta:
         fields = ('id', 'author', 'post', 'text', 'created')
@@ -23,8 +31,15 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class FollowSerializer(serializers.ModelSerializer):
-    user = serializers.SlugRelatedField(slug_field='username', read_only=True)
-    following = serializers.SlugRelatedField(slug_field='username', queryset=User.objects.all())
+    user = serializers.SlugRelatedField(
+        slug_field='username',
+        read_only=True
+    )
+    # Исправлено: перенос длинной строки
+    following = serializers.SlugRelatedField(
+        slug_field='username',
+        queryset=User.objects.all()
+    )
 
     class Meta:
         fields = ('user', 'following')
@@ -32,13 +47,18 @@ class FollowSerializer(serializers.ModelSerializer):
 
     def validate_following(self, value):
         user = self.context['request'].user
-        if Follow.objects.filter(user=user, following__username=value).exists():
-            raise serializers.ValidationError("Вы уже подписаны на данного автора")
+        # Исправлено: перенос длинной строки
+        if Follow.objects.filter(
+            user=user,
+            following__username=value
+        ).exists():
+            raise serializers.ValidationError(
+                "Вы уже подписаны на данного автора"
+            )
         return value
 
 
 class GroupSerializer(serializers.ModelSerializer):
-
     class Meta:
         fields = ('id', 'title')
         model = Group
