@@ -3,8 +3,16 @@ from dotenv import load_dotenv
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-load_dotenv(os.path.join(BASE_DIR, '.env'))
-SECRET_KEY = os.getenv('SECRET_KEY')
+# Загрузка .env файла (опционально)
+env_file = os.path.join(BASE_DIR, '.env')
+if os.path.exists(env_file):
+    load_dotenv(env_file)
+
+# SECRET_KEY с fallback значением для тестов
+SECRET_KEY = os.getenv(
+    'SECRET_KEY',
+    'django-insecure-fallback-key-for-testing-only-2024'
+)
 
 DEBUG = True
 
@@ -19,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'api',
+    'posts',  # Добавьте если используете
 ]
 
 MIDDLEWARE = [
@@ -74,17 +83,12 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 STATIC_URL = '/static/'
-
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/'),)
 
 REST_FRAMEWORK = {
