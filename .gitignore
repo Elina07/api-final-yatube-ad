@@ -1,0 +1,11 @@
+venv/
+venv311/
+__pycache__/
+*.pyc
+*.sqlite3
+.mypy_cache/
+.git/
+.env
+.DS_Store
+*.log
+EOF
